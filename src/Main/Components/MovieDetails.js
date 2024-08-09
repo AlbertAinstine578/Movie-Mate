@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import StarRating from "../../StarRating";
+
+
 function MovieDetails({ selectedId, KEY, setWatched, watched, setSelectedId }) {
   const [movieInfo, setMovieInfo] = useState({});
   const [loaded, setLoaded] = useState(false);
@@ -11,12 +13,13 @@ function MovieDetails({ selectedId, KEY, setWatched, watched, setSelectedId }) {
     setIsTop(movieInfo.imdbRating>8);
   },[movieInfo.imdbRating]);
 
+
   useEffect(
     function () {
       async function getMovieDetails() {
         setLoaded(false);
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
+          `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&i=${selectedId}`
         );
         const data = await res.json();
         setMovieInfo(data);

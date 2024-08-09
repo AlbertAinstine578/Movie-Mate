@@ -75,7 +75,7 @@ export default function App2() {
         </Box>
         <Box>
           {selectedId ? (
-            <MovieDetails selectedId={selectedId} KEY={KEY} setWatched={setWatched}  setSelectedId={setSelectedId} watched={watched} /> 
+            <MovieDetails selectedId={selectedId} setWatched={setWatched}  setSelectedId={setSelectedId} watched={watched} /> 
           ) : (
             <>
               <Summary

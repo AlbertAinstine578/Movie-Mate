@@ -10,7 +10,8 @@ import Summary from "./Main/Components/Summary";
 import WatchedList from "./Main/Components/WatchedList";
 import MovieDetails from "./Main/Components/MovieDetails";
 
-const KEY = "7fb00797";
+const KEY = process.env.REACT_APP_OMDB_API_KEY;
+
 
 export default function App2() {
   const [movies, setMovies] = useState([]);
@@ -30,9 +31,7 @@ export default function App2() {
         setMovies([]);
         setLoaded(false);
         setErrorMssg("");
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-        );
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
         const data = await res.json();
         if (data.Response === "False") {
           throw new Error("⛔️No Movie in the list!");

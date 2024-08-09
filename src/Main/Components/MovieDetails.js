@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StarRating from "../../StarRating";
 function MovieDetails({ selectedId, KEY, setWatched, watched, setSelectedId }) {
   const [movieInfo, setMovieInfo] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [outsideSelected, setOutsideSelected] = useState(null);
   const [originalRating, setOriginalRating] = useState(null);
-
+  const [isTop, setIsTop] = useState(movieInfo.imdbRating>8);
+  const count = useRef(0);
+  useEffect(function(){
+    setIsTop(movieInfo.imdbRating>8);
+  },[movieInfo.imdbRating]);
 
   useEffect(
     function () {
@@ -27,8 +31,15 @@ function MovieDetails({ selectedId, KEY, setWatched, watched, setSelectedId }) {
     setSelectedId(null);
   }
 
+  useEffect(function(){
+    if(outsideSelected){
+      count.current++;
+    }
+  },[outsideSelected]);
+
 
   function handleWatched() {
+
     const newMovie = {
       imdbID: selectedId,
       Poster: movieInfo.Poster,
@@ -36,6 +47,7 @@ function MovieDetails({ selectedId, KEY, setWatched, watched, setSelectedId }) {
       imdbRating: movieInfo.imdbRating,
       userRating: outsideSelected,
       runtime: Number(movieInfo.Runtime.split(" ").at(0)),
+      clickCount : count.current
     };
     setWatched((prev) => {
       let isPresent = false;
@@ -53,6 +65,10 @@ function MovieDetails({ selectedId, KEY, setWatched, watched, setSelectedId }) {
     });
     handleBack();
   }
+
+  useEffect(function(){
+    localStorage.setItem('watched',JSON.stringify(watched));
+  },[watched]);
 
 
   useEffect(() => {
